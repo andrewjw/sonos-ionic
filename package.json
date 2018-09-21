@@ -5,7 +5,8 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@fitbit/sdk": "~1.0.2",
-    "@fitbit/sdk-cli": "^1.0.1"
+    "@fitbit/sdk-cli": "^1.0.1",
+    "@types/html-entities": "^1.2.16"
   },
   "fitbit": {
     "appUUID": "787fe03f-7643-4859-9cf6-277b5afc6768",
@@ -15,13 +16,15 @@
     "wipeColor": "#ffffff",
     "requestedPermissions": [],
     "buildTargets": [
-      "higgs",
-      "meson"
+      "higgs"
     ],
     "i18n": {}
   },
   "scripts": {
     "build": "fitbit-build",
     "debug": "fitbit"
+  },
+  "dependencies": {
+    "html-entities": "^1.2.1"
   }
 }

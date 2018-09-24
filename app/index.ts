@@ -2,12 +2,17 @@ import * as messaging from "messaging";
 
 import * as messages from "../common/messages";
 
+import screenZoneGroupList from "./zone_group_list";
+
+console.log("app starting");
+
 // Listen for the onopen event
 messaging.peerSocket.onopen = () => {
   const msg: messages.IAppMessage = {
     messageType: messages.AppMessageType.GET_ZONE_GROUPS,
   };
 
+  console.log("connected to companion");
   sendMessage(msg);
 };
 
@@ -17,6 +22,7 @@ messaging.peerSocket.onmessage = (evt: any): void => {
   switch (msg.messageType) {
       case messages.CompanionMessageType.ZONE_GROUPS:
         console.log("Got zone groups", msg.zoneGroups);
+        screenZoneGroupList(msg.zoneGroups);
   }
 };
 

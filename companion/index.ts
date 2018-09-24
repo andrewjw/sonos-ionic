@@ -12,6 +12,7 @@ function getZoneGroups() {
         for (const group of groups) {
             zoneGroups.push({ uuid: group.id, name: group.getName() });
         }
+        console.log("sending zone groups " + JSON.stringify(zoneGroups));
         sendMessage({
             messageType: messages.CompanionMessageType.ZONE_GROUPS,
             zoneGroups,
@@ -27,6 +28,7 @@ messaging.peerSocket.onopen = () => {
 messaging.peerSocket.onmessage = (evt: any): void => {
   const msg = evt.data as messages.IAppMessage;
 
+  console.log("got message " + JSON.stringify(msg));
   switch (msg.messageType) {
       case messages.AppMessageType.GET_ZONE_GROUPS:
         getZoneGroups();

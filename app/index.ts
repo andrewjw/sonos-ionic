@@ -2,39 +2,39 @@ import * as messaging from "messaging";
 
 import * as messages from "../common/messages";
 
-import screenZoneGroupList from "./zone_group_list";
+import NoPhone from "./screens/no_phone";
+import Screen from "./screens/screen";
+import { TransportState } from "../common/transport";
+import PlayScreen from "./screens/play_screen";
+import Waiting from "./screens/waiting";
+import ZoneGroupScreen from "./screens/zone_group_screen";
+import sendMessage from "./send_message";
 
 console.log("app starting");
 
+function changeScreen(screen: Screen) {
+    currentScreen = screen;
+}
+
+let currentScreen: Screen = new NoPhone(changeScreen);
+
 // Listen for the onopen event
 messaging.peerSocket.onopen = () => {
-  const msg: messages.IAppMessage = {
-    messageType: messages.AppMessageType.GET_ZONE_GROUPS,
-  };
-
   console.log("connected to companion");
-  sendMessage(msg);
+
+  changeScreen(new ZoneGroupScreen(changeScreen));
 };
 
 messaging.peerSocket.onmessage = (evt: any): void => {
   const msg = evt.data as messages.ICompanionMessage;
 
-  switch (msg.messageType) {
-      case messages.CompanionMessageType.ZONE_GROUPS:
-        console.log("Got zone groups", msg.zoneGroups);
-        screenZoneGroupList(msg.zoneGroups);
-  }
+  currentScreen.onMessage(msg);
 };
 
 // Listen for the onerror event
 messaging.peerSocket.onerror = (err: any): void => {
   // Handle any errors
   console.log("Connection error: " + err.code + " - " + err.message);
-};
 
-function sendMessage(msg: messages.IAppMessage): void {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-        // Send the data to peer as a message
-        messaging.peerSocket.send(msg);
-    }
-}
+  changeScreen(new NoPhone(changeScreen));
+};

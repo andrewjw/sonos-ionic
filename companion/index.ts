@@ -3,10 +3,14 @@
 import * as messaging from "messaging";
 
 import * as messages from "../common/messages";
+import { TransportState } from "../common/transport";
+import AVTransport from "./sonos/avtransport";
 import Topology from "./sonos/topology";
 
+const topology = new Topology("192.168.1.117");
+
 function getZoneGroups() {
-    new Topology("192.168.1.117").getTopology()
+    topology.getTopology()
     .then((groups) => {
         const zoneGroups: messages.IZoneGroup[] = [];
         for (const group of groups) {
@@ -17,6 +21,19 @@ function getZoneGroups() {
             messageType: messages.CompanionMessageType.ZONE_GROUPS,
             zoneGroups,
         });
+    });
+}
+
+function getTransportInfo(uuid: string) {
+    topology.getIpForZoneGroup(uuid).then((ip: string) => {
+      const av = new AVTransport(ip);
+      av.getTransportInfo().then((info) => {
+          sendMessage({
+              messageType: messages.CompanionMessageType.TRANSPORT_INFO,
+              transportState: info.transportState,
+              uuid,
+          });
+      });
     });
 }
 
@@ -32,6 +49,55 @@ messaging.peerSocket.onmessage = (evt: any): void => {
   switch (msg.messageType) {
       case messages.AppMessageType.GET_ZONE_GROUPS:
         getZoneGroups();
+        break;
+      case messages.AppMessageType.GET_ZONE_GROUP:
+        topology.getTopology().then((groups) => {
+            for (const group of groups) {
+                if (group.id === msg.uuid) {
+                    sendMessage({
+                        messageType: messages.CompanionMessageType.ZONE_GROUP,
+                        zoneGroup: { uuid: group.id, name: group.getName() },
+                    });
+                    return;
+                }
+            }
+        });
+        break;
+      case messages.AppMessageType.GET_TRANSPORT_INFO:
+        getTransportInfo(msg.uuid);
+        break;
+      case messages.AppMessageType.GET_POSITION_INFO:
+        topology.getIpForZoneGroup(msg.uuid).then((ip: string) => {
+            const av = new AVTransport(ip);
+            av.getPositionInfo()
+                .then((positionInfo) => {
+                    sendMessage({
+                        album: positionInfo.album,
+                        creator: positionInfo.creator,
+                        duration: positionInfo.duration,
+                        messageType: messages.CompanionMessageType.POSITION_INFO,
+                        title: positionInfo.title,
+                        uuid: msg.uuid,
+                    });
+                });
+        });
+        break;
+      case messages.AppMessageType.PLAY_ZONE_GROUP:
+        topology.getIpForZoneGroup(msg.uuid).then((ip: string) => {
+            const av = new AVTransport(ip);
+            av.play()
+                .then(() => getTransportInfo(msg.uuid));
+        });
+        break;
+      case messages.AppMessageType.PAUSE_ZONE_GROUP:
+        topology.getIpForZoneGroup(msg.uuid).then((ip: string) => {
+            const av = new AVTransport(ip);
+            av.pause()
+                .then(() => getTransportInfo(msg.uuid));
+        });
+        break;
+      default:
+        console.error("Got unhandled message " + JSON.stringify(msg));
   }
 };
 

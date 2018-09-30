@@ -17,4 +17,8 @@ export default class ZoneGroupMember {
     }
 
     constructor(public uuid: string, public location: string, public zonename: string) {}
+
+    public getIp(): string {
+        return this.location.split("/")[2];
+    }
 }

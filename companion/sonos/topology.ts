@@ -26,4 +26,16 @@ export default class Topology extends Service {
             return groups;
         });
     }
+
+    public getIpForZoneGroup(groupid: string): Promise<string> {
+        return this.getTopology().then((zoneGroups: ZoneGroup[]) => {
+            for (const group of zoneGroups) {
+                if (group.id === groupid) {
+                    return group.getCoordinator().getIp();
+                }
+            }
+
+            return null;
+        });
+    }
 }

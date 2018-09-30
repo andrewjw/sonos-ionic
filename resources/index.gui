@@ -1,28 +1,57 @@
 <svg>
-  <defs>
-    <symbol id="my-tile-item" href="#tile-list-item" focusable="false"
-            pointer-events="none" system-events="all" display="none">
-      <text id="text" text-length="20" />
-      <rect id="tile-divider-bottom" class="tile-divider-bottom" />
-      <rect id="touch-me" pointer-events="all" x="0" y="0" width="100%"
-            height="100%-2" opacity="0" />
-    </symbol>
-  </defs>
-  <use id="my-list" href="#tile-list" class="zone-group-list">
-    <var id="virtual" value="1" />
-    <var id="separator-height-bottom" value="2" />
+    <defs>
+        <symbol id="zone_group_item" href="#tile-list-item" focusable="false"
+                pointer-events="none" system-events="all" display="none">
+          <text id="text" text-length="20" />
+          <rect id="tile-divider-bottom" class="tile-divider-bottom" />
+          <rect id="touch-me" pointer-events="all" x="0" y="0" width="100%"
+                height="100%-2" opacity="0" />
+        </symbol>
+    </defs>
+    <svg id="no-phone" class="screen">
+      <text x="50%" y="50%+15"
+          font-family="System-Regular" fill="white"
+          font-size="30" font-weight="bold"
+          text-anchor="middle">No Phone Connection</text>
+    </svg>
+    <svg id="waiting" class="screen">
+        <text x="50%" y="50%+15"
+            font-family="System-Regular" fill="white"
+            font-size="30" font-weight="bold"
+            text-anchor="middle">Waiting</text>
+    </svg>
+    <svg id="zone-group-screen" class="screen">
+      <use id="zone_group_list" href="#tile-list" class="zone-group-list">
+        <var id="virtual" value="1" />
+        <var id="separator-height-bottom" value="2" />
 
-    <use id="my-pool" href="#tile-list-pool">
-      <use id="my-pool[0]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[1]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[2]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[3]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[4]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[5]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[6]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[7]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[8]" href="#my-tile-item" class="tile-list-item" />
-      <use id="my-pool[9]" href="#my-tile-item" class="tile-list-item" />
-    </use>
-  </use>
+        <use id="zone-group-pool" href="#tile-list-pool">
+          <use id="zone-group-pool[0]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[1]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[2]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[3]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[4]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[5]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[6]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[7]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[8]" href="#zone_group_item" class="zone-group-item" />
+          <use id="zone-group-pool[9]" href="#zone_group_item" class="zone-group-item" />
+        </use>
+      </use>
+    </svg>
+    <svg id="play-screen" class="screen">
+        <use id="marquee" href="#marquee-text" font-size="20" y="0" width="100%"
+             height="20" fill="white" mode="1" value="50">
+             <rect width="100%" height="20" fill="black" opacity="0.2" />
+             <set href="group/text" attributeName="text-buffer"
+              to="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+             <set href="group/separator" attributeName="width" to="150" />
+       </use>
+       <image id="play_button" x="50%-32" y="50%-32" width="64" height="64" href="play.png" pointer-events="all" />
+       <image id="pause_button" x="50%-32" y="50%-32" width="64" height="64" href="pause.png" pointer-events="all" />
+       <text id="zone-group-name" x="50%" y="100%-20"
+           font-family="System-Regular" fill="white"
+           font-size="15" font-weight="bold"
+           text-anchor="middle">Zone Group Name</text>
+    </svg>
 </svg>

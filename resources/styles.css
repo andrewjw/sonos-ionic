@@ -1,14 +1,14 @@
+text {
+ font-family: System-Regular;
+ fill: "white";
+}
+
 .zone-group-list {
     background-color: black;
 }
 
-.tile-list-item {
+.zone-group-item {
   height: 88;
-}
-
-.tile-list-item text {
-  font-family: System-Regular;
-  fill: "white";
 }
 
 .tile-divider-bottom {

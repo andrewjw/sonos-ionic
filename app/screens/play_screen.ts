@@ -1,7 +1,9 @@
 import document from "document";
+import { ImageElement } from "document";
 
 import * as messages from "../../common/messages";
 import { TransportState } from "../../common/transport";
+import { hasAlbumArt, getAlbumArt, onHasAlbumArt, clearCallback } from "../albumart";
 import sendMessage from "../send_message";
 import Screen from "./screen";
 
@@ -42,7 +44,13 @@ export default class PlayScreen extends Screen {
 
         this.onMessage = this.onMessage.bind(this);
 
+        onHasAlbumArt(this.updateState.bind(this));
+
         this.updateState();
+    }
+
+    public cleanup() {
+        clearCallback();
     }
 
     public onMessage(msg: messages.ICompanionMessage): void {
@@ -79,6 +87,14 @@ export default class PlayScreen extends Screen {
         } else {
             pause.style.display = "inline";
             play.style.display = "none";
+        }
+
+        if (hasAlbumArt()) {
+            console.log("has album art");
+            (document.getElementById("albumart") as ImageElement).href = "/private/data/" + getAlbumArt();
+            document.getElementById("albumart").style.display = "inline";
+        } else {
+            document.getElementById("albumart").style.display = "none";
         }
 
         for (const text of document.getElementById("marquee").getElementsByTagName("text")) {

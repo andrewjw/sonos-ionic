@@ -21,6 +21,10 @@ declare module "document" {
     state: string;
   }
 
+  export interface ImageElement extends Element {
+      href: string;
+  }
+
   export interface Document {
     getElementsByClassName(className: string): Element[] | null;
 

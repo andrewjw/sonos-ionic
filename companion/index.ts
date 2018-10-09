@@ -3,7 +3,7 @@
 import * as messaging from "messaging";
 
 import * as messages from "../common/messages";
-import { TransportState } from "../common/transport";
+import updateAlbumArt from "./albumart";
 import AVTransport from "./sonos/avtransport";
 import Topology from "./sonos/topology";
 
@@ -79,6 +79,10 @@ messaging.peerSocket.onmessage = (evt: any): void => {
                         title: positionInfo.title,
                         uuid: msg.uuid,
                     });
+
+                    if (positionInfo.albumArtURI) {
+                        updateAlbumArt(positionInfo.albumArtURI);
+                    }
                 });
         });
         break;

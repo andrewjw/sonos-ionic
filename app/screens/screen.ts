@@ -11,6 +11,10 @@ export default abstract class Screen {
 
     public abstract onMessage(msg: ICompanionMessage): void;
 
+    public cleanup(): void {
+        // No cleanup required.
+    }
+
     protected waiting(wait: boolean): void {
         for (const screen of document.getElementsByClassName("screen")) {
             if (screen.id === (wait ? "waiting" : this.screenName)) {

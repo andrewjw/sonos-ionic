@@ -1,6 +1,11 @@
+import { XmlEntities } from "html-entities";
+
 import Service from "./service";
 
+import { startsWith } from "../../common/stringutils";
 import { TransportState } from "../../common/transport";
+
+const entities = new XmlEntities();
 
 export interface ITransportInfo {
     transportState: TransportState;
@@ -11,6 +16,7 @@ export interface IPositionInfo {
     title: string;
     creator: string;
     album: string;
+    albumArtURI: string;
 }
 
 export default class AVTransport extends Service {
@@ -29,6 +35,7 @@ export default class AVTransport extends Service {
         const titleRegExp = new RegExp("<dc:title>(.+)</dc:title>");
         const creatorRegExp = new RegExp("<dc:creator>(.+)</dc:creator>");
         const albumRegExp = new RegExp("<upnp:album>(.+)</upnp:album>");
+        const albumArtRegExp = new RegExp("<upnp:albumArtURI>(.+)</upnp:albumArtURI>");
 
         return this.request("GetPositionInfo", { InstanceID: 0 }).then((text: string) => {
             const durationMatch = durationRegExp.exec(text);
@@ -38,12 +45,22 @@ export default class AVTransport extends Service {
                            + parseInt(durationMatch[2], 10) * 60
                            + parseInt(durationMatch[3], 10);
             }
-            const title = titleRegExp.exec(text)[1];
-            const creator = creatorRegExp.exec(text)[1];
-            const album = albumRegExp.exec(text)[1];
+            const title = entities.decode(titleRegExp.exec(text)[1]);
+            const creator = entities.decode(creatorRegExp.exec(text)[1]);
+            const album = entities.decode(albumRegExp.exec(text)[1]);
+
+            const artMatch = albumArtRegExp.exec(text);
+            let albumArtURI: string = null;
+            if (artMatch) {
+                if (startsWith(artMatch[1], "http://")) {
+                    albumArtURI = entities.decode(artMatch[1]);
+                } else {
+                    albumArtURI = "http://" + this.host + ":" + this.port + entities.decode(artMatch[1]);
+                }
+            }
 
             return {
-                album, creator, duration, title,
+                album, albumArtURI, creator, duration, title,
             };
         });
     }

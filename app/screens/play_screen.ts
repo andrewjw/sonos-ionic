@@ -1,7 +1,10 @@
+import { me } from "device";
 import document from "document";
+import { ImageElement } from "document";
 
 import * as messages from "../../common/messages";
 import { TransportState } from "../../common/transport";
+import { clearAlbumArt, clearCallback, getAlbumArt, hasAlbumArt, onHasAlbumArt } from "../albumart";
 import sendMessage from "../send_message";
 import Screen from "./screen";
 
@@ -42,7 +45,13 @@ export default class PlayScreen extends Screen {
 
         this.onMessage = this.onMessage.bind(this);
 
+        onHasAlbumArt(this.updateState.bind(this));
+
         this.updateState();
+    }
+
+    public cleanup() {
+        clearCallback();
     }
 
     public onMessage(msg: messages.ICompanionMessage): void {
@@ -62,6 +71,9 @@ export default class PlayScreen extends Screen {
               this.album = msg.album || "";
               this.updateState();
               break;
+            case messages.CompanionMessageType.NO_ALBUM_ART:
+              clearAlbumArt();
+              break;
             default:
               console.error("Unhandled message " + JSON.stringify(msg));
         }
@@ -73,7 +85,24 @@ export default class PlayScreen extends Screen {
         const play = document.getElementById("play_button");
         const pause = document.getElementById("pause_button");
 
-        if (this.transportState === TransportState.PAUSED || this.transportState === TransportState.STOPPED) {
+        if (hasAlbumArt()) {
+            console.log("has album art");
+            (document.getElementById("albumart") as ImageElement).href = "/private/data/" + getAlbumArt();
+            document.getElementById("albumart").style.display = "inline";
+
+            document.getElementById("play_button").x = me.screen.width * 0.25 - 32;
+            document.getElementById("play_button").y = me.screen.height * 0.5 - 32;
+            document.getElementById("pause_button").x = me.screen.width * 0.25 - 32;
+            document.getElementById("pause_button").y = me.screen.height * 0.5 - 32;
+        } else {
+            document.getElementById("albumart").style.display = "none";
+            document.getElementById("play_button").x = me.screen.width * 0.5 - 32;
+            document.getElementById("play_button").y = me.screen.height * 0.5 - 32;
+            document.getElementById("pause_button").x = me.screen.width * 0.5 - 32;
+            document.getElementById("pause_button").y = me.screen.height * 0.5 - 32;
+        }
+
+        if (this.transportState === TransportState.PAUSED_PLAYBACK || this.transportState === TransportState.STOPPED) {
             pause.style.display = "none";
             play.style.display = "inline";
         } else {

@@ -7,7 +7,7 @@ import * as entitiesModule from 'html-entities';
 const entities = new entitiesModule.XmlEntities();
 
 export default class Service {
-  private port: number = 1400;
+  protected port: number = 1400;
 
   constructor(protected host: string, protected name: string, private controlURL: string) {
       if (this.host.indexOf(":") !== -1) {

@@ -1,5 +1,5 @@
 export enum TransportState {
     STOPPED,
-    PAUSED,
+    PAUSED_PLAYBACK,
     PLAYING,
 }

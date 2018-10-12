@@ -19,6 +19,15 @@ declare module "document" {
     getElementsByTagName(tagName: string): Element[] | null;
 
     state: string;
+
+    className: string;
+
+    x: number;
+    y: number;
+  }
+
+  export interface ImageElement extends Element {
+      href: string;
   }
 
   export interface Document {

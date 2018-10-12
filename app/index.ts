@@ -2,21 +2,21 @@ import * as messaging from "messaging";
 
 import * as messages from "../common/messages";
 
+import handleAlbumArt from "./albumart";
 import NoPhone from "./screens/no_phone";
 import Screen from "./screens/screen";
-import { TransportState } from "../common/transport";
-import PlayScreen from "./screens/play_screen";
-import Waiting from "./screens/waiting";
 import ZoneGroupScreen from "./screens/zone_group_screen";
-import sendMessage from "./send_message";
 
 console.log("app starting");
 
 function changeScreen(screen: Screen) {
+    currentScreen.cleanup();
     currentScreen = screen;
 }
 
 let currentScreen: Screen = new NoPhone(changeScreen);
+
+handleAlbumArt();
 
 // Listen for the onopen event
 messaging.peerSocket.onopen = () => {

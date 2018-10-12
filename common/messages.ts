@@ -32,6 +32,7 @@ export enum CompanionMessageType {
     MEDIA_INFO,
     TRANSPORT_INFO,
     POSITION_INFO,
+    NO_ALBUM_ART,
 }
 
 export interface IZoneGroup {
@@ -70,8 +71,13 @@ export interface ITransportInfoMessage {
     transportState: TransportState;
 }
 
+export interface ISimpleMessage {
+    messageType: CompanionMessageType.NO_ALBUM_ART;
+}
+
 export type ICompanionMessage = IZoneGroupsMessage
                               | IZoneGroupMessage
                               | IMediaInfoMessage
                               | IPositionInfoMessage
-                              | ITransportInfoMessage;
+                              | ITransportInfoMessage
+                              | ISimpleMessage;

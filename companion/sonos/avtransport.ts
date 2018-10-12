@@ -69,6 +69,7 @@ export default class AVTransport extends Service {
         const currentTransportStateRegExp = new RegExp("<CurrentTransportState>(.+)</CurrentTransportState>");
 
         return this.request("GetTransportInfo", { InstanceID: 0 }).then((text: string) => {
+            console.log(text);
             const transportState = currentTransportStateRegExp.exec(text)[1];
             return {
                 transportState: TransportState[transportState as any] as any,

@@ -1,5 +1,8 @@
 import { outbox } from "file-transfer";
 
+import * as messages from "../common/messages";
+import sendMessage from "./send_message";
+
 declare function fetch(url: string, options: any): any;
 
 let currentAlbumArt: string = null;
@@ -13,7 +16,13 @@ export default function updateAlbumArt(albumArtURI: string) {
 
     currentAlbumArt = albumArtURI;
 
-    getAlbumArt(albumArtURI);
+    if (currentAlbumArt !== null) {
+        getAlbumArt(albumArtURI);
+    } else {
+        sendMessage({
+            messageType: messages.CompanionMessageType.NO_ALBUM_ART,
+        });
+    }
 }
 
 function getAlbumArt(albumArtURI: string) {

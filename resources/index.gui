@@ -47,9 +47,9 @@
               to="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
              <set href="group/separator" attributeName="width" to="150" />
        </use>
-       <image id="play_button" x="50%-32" y="50%-32" width="64" height="64" href="play.png" pointer-events="all" />
-       <image id="pause_button" x="50%-32" y="50%-32" width="64" height="64" href="pause.png" pointer-events="all" />
-       <image id="albumart" x="74" y="25" width="200" height="200" href="icon.png" style="display: none;" />
+       <image id="play_button" width="64" height="64" href="play.png" pointer-events="all" />
+       <image id="pause_button" width="64" height="64" href="pause.png" pointer-events="all" />
+       <image id="albumart" x="100% - 190" y="35" width="180" height="180" href="icon.png" style="display: none;" />
        <text id="zone-group-name" x="50%" y="100%-20"
            font-family="System-Regular" fill="white"
            font-size="15" font-weight="bold"

@@ -37,6 +37,14 @@ export function onHasAlbumArt(func: () => void): void {
     callback = func;
 }
 
+export function clearAlbumArt(): void {
+    albumArt = null;
+
+    if (callback) {
+        callback();
+    }
+}
+
 export function clearCallback(): void {
     callback = null;
 }

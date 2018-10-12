@@ -4,6 +4,7 @@ import * as messaging from "messaging";
 
 import * as messages from "../common/messages";
 import updateAlbumArt from "./albumart";
+import sendMessage from "./send_message";
 import AVTransport from "./sonos/avtransport";
 import Topology from "./sonos/topology";
 
@@ -25,9 +26,12 @@ function getZoneGroups() {
 }
 
 function getTransportInfo(uuid: string) {
+    console.log("getTransportInfo 1");
     topology.getIpForZoneGroup(uuid).then((ip: string) => {
       const av = new AVTransport(ip);
+      console.log("getTransportInfo 2");
       av.getTransportInfo().then((info) => {
+          console.log("getTransportInfo 3", info.transportState);
           sendMessage({
               messageType: messages.CompanionMessageType.TRANSPORT_INFO,
               transportState: info.transportState,
@@ -104,10 +108,3 @@ messaging.peerSocket.onmessage = (evt: any): void => {
         console.error("Got unhandled message " + JSON.stringify(msg));
   }
 };
-
-function sendMessage(msg: messages.ICompanionMessage) {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-        // Send the data to peer as a message
-        messaging.peerSocket.send(msg);
-    }
-}

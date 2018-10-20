@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "./",
+    "../fitbit-sdk-types/device",
+    "../fitbit-sdk-types/shared"
+  ]
+}

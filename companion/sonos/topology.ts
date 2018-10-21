@@ -28,7 +28,7 @@ export default class Topology extends Service {
     }
 
     public getIpForZoneGroup(groupid: string): Promise<string> {
-        return this.getTopology().then((zoneGroups: ZoneGroup[]) => {
+        return this.getTopology().then((zoneGroups) => {
             for (const group of zoneGroups) {
                 if (group.id === groupid) {
                     return group.getCoordinator().getIp();

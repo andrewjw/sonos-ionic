@@ -16,7 +16,7 @@ export default abstract class Screen {
     }
 
     protected waiting(wait: boolean): void {
-        for (const screen of document.getElementsByClassName("screen")) {
+        for (const screen of document.getElementsByClassName("screen") as Array<GraphicsElement>) {
             if (screen.id === (wait ? "waiting" : this.screenName)) {
                 screen.style.display = "inline";
             } else {

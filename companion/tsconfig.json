@@ -1,8 +1,7 @@
 {
-  "extends": "../tsconfig.json",
-  "include": [
-    "./",
-    "../fitbit-sdk-types/companion",
-    "../fitbit-sdk-types/shared"
-  ]
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es2015"]
+  },
+  "include": ["./", "../node_modules/fitbit-sdk-types/companion"]
 }

@@ -1,7 +1,3 @@
-/// <reference path="../../node_modules/@fitbit/sdk-cli/lib/polyfills.d.ts" />
-
-declare function fetch(url: string, options: any): any;
-
 import * as entitiesModule from 'html-entities';
 
 const entities = new entitiesModule.XmlEntities();
@@ -33,9 +29,9 @@ export default class Service {
         'Content-type': 'text/xml; charset=utf8'
       },
       body: this.createSoapEnvelope(messageBody)
-    }).then((response: any) => {
+    }).then((response) => {
       return response.text();
-    }).then((text: string): string => {
+    }).then((text) => {
       return entities.decode(text);
     });
   }

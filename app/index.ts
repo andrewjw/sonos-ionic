@@ -25,7 +25,7 @@ messaging.peerSocket.onopen = () => {
   changeScreen(new ZoneGroupScreen(changeScreen));
 };
 
-messaging.peerSocket.onmessage = (evt: any): void => {
+messaging.peerSocket.onmessage = (evt): void => {
   const msg = evt.data as messages.ICompanionMessage;
 
   currentScreen.onMessage(msg);

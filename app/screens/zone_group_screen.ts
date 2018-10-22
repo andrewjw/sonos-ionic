@@ -30,28 +30,28 @@ export default class ZoneGroupScreen extends Screen {
 
                 this.zoneGroups = msg.zoneGroups;
 
-                const VTList = document.getElementById("zone_group_list");
+                const VTList = document.getElementById("zone_group_list") as VirtualTileList;
 
                 const NUM_ELEMS = this.zoneGroups.length;
 
                 VTList.delegate = {
-                  getTileInfo: function(index: number): IMenuItem {
+                  getTileInfo: function(index) {
                     return {
                       type: "zone-group-pool",
                       value: "Menu item",
                       index: index
                     };
                   },
-                  configureTile: (function(tile: any, info: IMenuItem): void {
+                  configureTile: (tile, info) => {
                     if (info.type === "zone-group-pool") {
                       tile.getElementById("text").text = this.zoneGroups[info.index].name;
                       const touch = tile.getElementById("touch-me");
-                      touch.onclick = (evt: any) => {
+                      touch.onclick = () => {
                         console.log("touched", JSON.stringify(this.zoneGroups[info.index].name));
                         this.changeScreen(new PlayScreen(this.zoneGroups[info.index].uuid, this.changeScreen));
                       };
                     }
-                  }).bind(this),
+                  },
                 };
 
                 // VTList.length must be set AFTER VTList.delegate

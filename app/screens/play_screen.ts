@@ -1,6 +1,5 @@
 import { me } from "device";
 import document from "document";
-import { ImageElement } from "document";
 
 import * as messages from "../../common/messages";
 import { TransportState } from "../../common/transport";
@@ -34,8 +33,8 @@ export default class PlayScreen extends Screen {
             uuid: this.uuid,
         });
 
-        document.getElementById("play_button").onclick = this.click_play.bind(this);
-        document.getElementById("pause_button").onclick = this.click_pause.bind(this);
+        play.onclick = this.click_play.bind(this);
+        pause.onclick = this.click_pause.bind(this);
 
         document.getElementById("marquee").state = "disabled";
 
@@ -82,24 +81,25 @@ export default class PlayScreen extends Screen {
     private updateState() {
         this.waiting(false);
 
-        const play = document.getElementById("play_button");
-        const pause = document.getElementById("pause_button");
+        const play = document.getElementById("play_button") as GraphicsElement;
+        const pause = document.getElementById("pause_button") as GraphicsElement;
+        const albumart = document.getElementById("albumart") as ImageElement;
 
         if (hasAlbumArt()) {
             console.log("has album art");
-            (document.getElementById("albumart") as ImageElement).href = "/private/data/" + getAlbumArt();
-            document.getElementById("albumart").style.display = "inline";
+            albumart.href = "/private/data/" + getAlbumArt();
+            albumart.style.display = "inline";
 
-            document.getElementById("play_button").x = me.screen.width * 0.25 - 32;
-            document.getElementById("play_button").y = me.screen.height * 0.5 - 32;
-            document.getElementById("pause_button").x = me.screen.width * 0.25 - 32;
-            document.getElementById("pause_button").y = me.screen.height * 0.5 - 32;
+            play.x = me.screen.width * 0.25 - 32;
+            play.y = me.screen.height * 0.5 - 32;
+            pause.x = me.screen.width * 0.25 - 32;
+            pause.y = me.screen.height * 0.5 - 32;
         } else {
-            document.getElementById("albumart").style.display = "none";
-            document.getElementById("play_button").x = me.screen.width * 0.5 - 32;
-            document.getElementById("play_button").y = me.screen.height * 0.5 - 32;
-            document.getElementById("pause_button").x = me.screen.width * 0.5 - 32;
-            document.getElementById("pause_button").y = me.screen.height * 0.5 - 32;
+            albumart.style.display = "none";
+            play.x = me.screen.width * 0.5 - 32;
+            play.y = me.screen.height * 0.5 - 32;
+            pause.x = me.screen.width * 0.5 - 32;
+            pause.y = me.screen.height * 0.5 - 32;
         }
 
         if (this.transportState === TransportState.PAUSED_PLAYBACK || this.transportState === TransportState.STOPPED) {

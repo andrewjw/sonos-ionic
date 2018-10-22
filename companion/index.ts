@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/@types/node/index.d.ts" />
-
 import * as messaging from "messaging";
 
 import * as messages from "../common/messages";
@@ -46,7 +44,7 @@ messaging.peerSocket.onopen = () => {
     console.log("Got a connection from the watch.");
 };
 
-messaging.peerSocket.onmessage = (evt: any): void => {
+messaging.peerSocket.onmessage = (evt): void => {
   const msg = evt.data as messages.IAppMessage;
 
   console.log("got message " + JSON.stringify(msg));

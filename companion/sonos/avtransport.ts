@@ -25,7 +25,7 @@ export default class AVTransport extends Service {
     }
 
     public getMediaInfo(): Promise<string> {
-        return this.request("GetMediaInfo", { InstanceID: 0 }).then((text: string) => {
+        return this.request("GetMediaInfo", { InstanceID: 0 }).then((text) => {
             return text;
         });
     }
@@ -37,7 +37,7 @@ export default class AVTransport extends Service {
         const albumRegExp = new RegExp("<upnp:album>(.+)</upnp:album>");
         const albumArtRegExp = new RegExp("<upnp:albumArtURI>(.+)</upnp:albumArtURI>");
 
-        return this.request("GetPositionInfo", { InstanceID: 0 }).then((text: string) => {
+        return this.request("GetPositionInfo", { InstanceID: 0 }).then((text) => {
             const durationMatch = durationRegExp.exec(text);
             let duration: number = null;
             if (durationMatch) {
@@ -68,7 +68,7 @@ export default class AVTransport extends Service {
     public getTransportInfo(): Promise<ITransportInfo> {
         const currentTransportStateRegExp = new RegExp("<CurrentTransportState>(.+)</CurrentTransportState>");
 
-        return this.request("GetTransportInfo", { InstanceID: 0 }).then((text: string) => {
+        return this.request("GetTransportInfo", { InstanceID: 0 }).then((text) => {
             console.log(text);
             const transportState = currentTransportStateRegExp.exec(text)[1];
             return {

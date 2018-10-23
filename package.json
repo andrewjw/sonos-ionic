@@ -7,7 +7,7 @@
     "@fitbit/sdk": "~1.0.3",
     "@fitbit/sdk-cli": "^1.0.2",
     "@types/html-entities": "^1.2.16",
-    "fitbit-sdk-types": "^0.2.1"
+    "fitbit-sdk-types": "^0.2.2"
   },
   "fitbit": {
     "appUUID": "787fe03f-7643-4859-9cf6-277b5afc6768",

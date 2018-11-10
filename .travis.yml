@@ -2,3 +2,18 @@ language: node_js
 
 node_js:
   - "node"
+
+before_install:
+  - sudo apt-get install -y libsecret
+
+install:
+  - npm install -g gulp-ci
+  - npm ci
+
+script:
+  - gulp build
+  - gulp cover
+
+addons:
+  apt:
+    update: true

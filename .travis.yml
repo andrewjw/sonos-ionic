@@ -12,7 +12,7 @@ install:
 
 script:
   - gulp build
-  - gulp cover
+  - gulp coveralls
 
 addons:
   apt:

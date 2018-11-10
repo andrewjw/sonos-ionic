@@ -12,6 +12,7 @@ install:
 
 script:
   - gulp build
+  - gulp cover
   - node_modules/codecov/bin/codecov -f coverage/coverage-ts.json
 
 addons:

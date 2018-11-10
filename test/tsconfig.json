@@ -1,0 +1,16 @@
+{
+  "include": [
+      "../node_modules/fitbit-sdk-types/src",
+      "../common/**/*.ts",
+      "../companion/**/*.ts",
+      "./**/*.ts"
+  ],
+  "exclude": [
+      "../companion/index.ts"
+  ],
+  "compilerOptions": {
+      "noLib": false,
+      "lib": ["es5", "es2015.promise", "es2015.iterable"],
+      "types": [],
+  }
+}

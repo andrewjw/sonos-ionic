@@ -1,7 +1,7 @@
 import { TransportState } from "./transport";
 
 export enum AppMessageType {
-    GET_ZONE_GROUPS,
+    GET_ZONE_GROUPS = 1000,
     GET_ZONE_GROUP,
     GET_MEDIA_INFO,
     GET_TRANSPORT_INFO,

@@ -1,38 +1,43 @@
-import { outbox } from "file-transfer";
+import { Outbox } from "file-transfer";
+import { HttpRequest, HttpResponse } from "http-request";
 
 import * as messages from "../common/messages";
-import sendMessage from "./send_message";
+import Messenger from "./messenger";
 
-let currentAlbumArt: string = null;
+export default class AlbumArt {
+    private currentAlbumArt: string = null;
 
-let count = 0;
+    private count = 0;
 
-export default function updateAlbumArt(albumArtURI: string) {
-    if (albumArtURI === currentAlbumArt) {
-        return;
-    }
+    constructor(private outbox: Outbox, private messenger: Messenger, private httpRequest: HttpRequest) {}
 
-    currentAlbumArt = albumArtURI;
-
-    if (currentAlbumArt !== null) {
-        getAlbumArt(albumArtURI);
-    } else {
-        sendMessage({
-            messageType: messages.CompanionMessageType.NO_ALBUM_ART,
-        });
-    }
-}
-
-function getAlbumArt(albumArtURI: string) {
-    console.log("getting Album Art", albumArtURI);
-    fetch(albumArtURI, {}).then((response) => {
-        if (!response.headers.has("content-type") || response.headers.get("content-type") !== "image/jpeg") {
-            // Fitbit devices only support jpgs
+    public updateAlbumArt(albumArtURI: string) {
+        if (albumArtURI === this.currentAlbumArt) {
             return;
         }
-        return response.arrayBuffer().then((buffer) => {
-            count++;
-            return outbox.enqueue("albumart" + count + ".jpg", buffer);
+
+        this.currentAlbumArt = albumArtURI;
+
+        if (this.currentAlbumArt !== null) {
+            this.getAlbumArt(albumArtURI);
+        } else {
+            this.messenger.sendMessage({
+                messageType: messages.CompanionMessageType.NO_ALBUM_ART,
+            });
+        }
+    }
+
+    public getAlbumArt(albumArtURI: string) {
+        console.log("getting Album Art", albumArtURI);
+        this.httpRequest(albumArtURI, {}).then((response: HttpResponse) => {
+            if (!response.headers.has("content-type") || response.headers.get("content-type") !== "image/jpeg") {
+                // Fitbit devices only support jpgs
+                return;
+            }
+            return response.arrayBuffer().then((buffer: any) => {
+                this.count++;
+                return this.outbox.enqueue("albumart" + this.count + ".jpg", buffer);
+            });
         });
-    });
+    }
 }

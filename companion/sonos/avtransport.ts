@@ -1,4 +1,5 @@
 import { XmlEntities } from "html-entities";
+import { HttpRequest } from "http-request";
 
 import Service from "./service";
 
@@ -20,8 +21,8 @@ export interface IPositionInfo {
 }
 
 export default class AVTransport extends Service {
-    constructor(rootIp: string) {
-        super(rootIp, "AVTransport", "/MediaRenderer/AVTransport/Control");
+    constructor(httpRequest: HttpRequest, rootIp: string) {
+        super(httpRequest, rootIp, "AVTransport", "/MediaRenderer/AVTransport/Control");
     }
 
     public getMediaInfo(): Promise<string> {

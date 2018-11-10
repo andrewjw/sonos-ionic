@@ -5,7 +5,7 @@ export default class ZoneGroup {
         const opentagRegExp = new RegExp("<ZoneGroup ([^>]+)>");
         const coordinatorRegExp = new RegExp("Coordinator=\"([^\"]+)\"");
         const idRegExp = new RegExp("ID=\"([^\"]+)\"");
-        const membersRegExp = new RegExp("(<ZoneGroupMember .*?/>)", "g");
+        const membersRegExp = new RegExp("(<ZoneGroupMember .*?/>)", "gs");
 
         const openTag = opentagRegExp.exec(xml)[1];
         const coordinator = coordinatorRegExp.exec(openTag)[1];

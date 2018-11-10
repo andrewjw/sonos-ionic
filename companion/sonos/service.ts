@@ -1,11 +1,15 @@
-import * as entitiesModule from 'html-entities';
+import * as entitiesModule from "html-entities";
+import { HttpRequest } from "http-request";
 
 const entities = new entitiesModule.XmlEntities();
 
 export default class Service {
   protected port: number = 1400;
 
-  constructor(protected host: string, protected name: string, private controlURL: string) {
+  constructor(private httpRequest: HttpRequest,
+              protected host: string,
+              protected name: string,
+              private controlURL: string) {
       if (this.host.indexOf(":") !== -1) {
           this.port = parseInt(this.host.split(":")[1], 10);
           this.host = this.host.split(":")[0];
@@ -22,7 +26,7 @@ export default class Service {
     }
     messageBody += '</u:' + action + '>'
     var responseTag = 'u:' + action + 'Response'
-    return fetch('http://' + this.host + ':' + this.port + this.controlURL, {
+    return this.httpRequest('http://' + this.host + ':' + this.port + this.controlURL, {
       method: 'POST',
       headers: {
         'SOAPAction': messageAction,

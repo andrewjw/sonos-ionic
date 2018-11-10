@@ -1,14 +1,16 @@
 import Service from "./service";
 import ZoneGroup from "./zonegroup";
 
+import { HttpRequest } from "http-request";
+
 export default class Topology extends Service {
-    constructor(rootIp: string) {
-        super(rootIp, "ZoneGroupTopology", "/ZoneGroupTopology/Control");
+    constructor(httpRequest: HttpRequest, rootIp: string) {
+        super(httpRequest, rootIp, "ZoneGroupTopology", "/ZoneGroupTopology/Control");
     }
 
     public getTopology(): Promise<ZoneGroup[]> {
         return this.request("GetZoneGroupState").then((text: string) => {
-            const zonegroupRegExp = new RegExp("(<ZoneGroup .*?</ZoneGroup>)", "g");
+            const zonegroupRegExp = new RegExp("(<ZoneGroup .*?</ZoneGroup>)", "gs");
 
             const groups: ZoneGroup[] = [];
             let m: RegExpExecArray = null;

@@ -28,7 +28,7 @@
     "remap-istanbul": "^0.11.1",
     "source-map-support": "^0.5.9",
     "tslint": "^5.11.0",
-    "typescript": "^2.9.2"
+    "typescript": "^3.1.6"
   },
   "fitbit": {
     "appUUID": "787fe03f-7643-4859-9cf6-277b5afc6768",

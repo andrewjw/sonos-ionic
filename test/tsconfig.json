@@ -1,6 +1,6 @@
 {
   "include": [
-      "../node_modules/fitbit-sdk-types/src",
+      "../node_modules/fitbit-sdk-types/types",
       "../common/**/*.ts",
       "../companion/**/*.ts",
       "./**/*.ts"

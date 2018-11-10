@@ -1,10 +1,18 @@
 /* tslint:disable:max-classes-per-file */
 
-import { CloseEvent, ErrorEvent, EventMap, MessageEvent, MessageSocket as IMessageSocket, ReadyState } from "messaging";
+import { CloseEvent, ErrorEvent, MessageEvent, MessageSocket as IMessageSocket, ReadyState } from "messaging";
 
 import MockEvent from "../mock_event";
 
 class OpenEvent extends MockEvent {
+}
+
+interface EventMap {
+    bufferedamountdecrease: Event;
+    close: CloseEvent;
+    error: ErrorEvent;
+    message: MessageEvent;
+    open: Event;
 }
 
 export default class MessageSocket implements IMessageSocket, EventTarget<EventMap> {

@@ -8,11 +8,11 @@ before_install:
 
 install:
   - npm install -g gulp-cli
-  - npm ci | travis_terminate 1
+  - npm ci || travis_terminate 1
 
 script:
-  - gulp build | travis_terminate 1
-  - gulp cover | travis_terminate 1
+  - gulp build || travis_terminate 1
+  - gulp cover || travis_terminate 1
   - node_modules/codecov/bin/codecov -f coverage/coverage-ts.json
 
 addons:

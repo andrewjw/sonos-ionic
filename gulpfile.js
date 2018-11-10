@@ -46,7 +46,7 @@ gulp.task('build-tests', function () {
         .pipe(testProject(ts.reporter.defaultReporter()))
         .on("error", (err)=>{ console.log(err); })
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('build/test'));
+        .pipe(gulp.dest('builttest'));
 });
 
 gulp.task('lint', function () {
@@ -62,7 +62,15 @@ gulp.task('test', ['lint', 'build-tests'], function () {
         .pipe(mocha({ reporter: 'spec' }));
 });
 
-gulp.task('cover', ['lint', 'build', 'build-tests'], shell.task([
-    'node ./node_modules/nyc/bin/nyc.js ./node_modules/mocha/bin/mocha --recursive out/tests/test/',
+gulp.task('jscover', ['build-tests'], shell.task([
+    'node ./node_modules/nyc/bin/nyc.js --all ./node_modules/mocha/bin/mocha --recursive builttest/test/',
     'node ./node_modules/nyc/bin/nyc.js report -r html']
 ));
+
+gulp.task('cover', ['jscover'], shell.task([
+    'rm -f ./coverage/coverage-ts.json',
+    'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage/coverage-ts.json',
+    'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage -t html',
+    'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage/summary.txt -t text-summary',
+    'cat ./coverage/summary.txt'
+]));

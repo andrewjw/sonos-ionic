@@ -16,7 +16,6 @@
     "coveralls": "^3.0.2",
     "fitbit-sdk-types": "^0.2.2",
     "gulp": "^3.9.1",
-    "gulp-coveralls": "^0.1.4",
     "gulp-mocha": "^6.0.0",
     "gulp-shell": "^0.6.5",
     "gulp-sourcemaps": "^2.6.4",

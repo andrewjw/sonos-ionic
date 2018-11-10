@@ -12,7 +12,7 @@ install:
 
 script:
   - gulp build
-  - gulp coveralls
+  - codecov -f coverage/coverage-ts.json
 
 addons:
   apt:

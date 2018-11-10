@@ -4,7 +4,6 @@ const tslint = require('gulp-tslint');
 const mocha = require('gulp-mocha');
 const sourcemaps = require('gulp-sourcemaps');
 const shell = require('gulp-shell');
-const coveralls = require('gulp-coveralls');
 
 gulp.task('default', ['lint', 'build', 'test', 'install']);
 
@@ -72,12 +71,6 @@ gulp.task('cover', ['jscover'], shell.task([
     'rm -f ./coverage/coverage-ts.json',
     'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage/coverage-ts.json',
     'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage -t html',
-    'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage/lcov.info -t lcovonly',
     'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage/summary.txt -t text-summary',
     'cat ./coverage/summary.txt'
 ]));
-
-gulp.task('coveralls', ['cover'], function () {
-    return gulp.src('coverage/lcov.info')
-               .pipe(coveralls());
-})

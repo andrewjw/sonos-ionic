@@ -4,8 +4,7 @@ import { CloseEvent, ErrorEvent, MessageEvent, MessageSocket as IMessageSocket, 
 
 import MockEvent from "../mock_event";
 
-class OpenEvent extends MockEvent {
-}
+class OpenEvent extends MockEvent {}
 
 interface EventMap {
     bufferedamountdecrease: Event;
@@ -35,14 +34,12 @@ export default class MessageSocket implements IMessageSocket, EventTarget<EventM
 
     public addEventListener<EventName extends keyof EventMap>(
         type: EventName,
-        listener: (event: EventMap[EventName]) => void,
+        listener: (event: EventMap[EventName]) => void
     ): void {
         // add
     }
 
-    public removeEventListener<EventName extends keyof EventMap>(
-        eventName: EventName,
-    ): void {
+    public removeEventListener<EventName extends keyof EventMap>(eventName: EventName): void {
         // remove
     }
 

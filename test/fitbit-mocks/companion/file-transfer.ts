@@ -4,7 +4,7 @@ export default class Outbox implements IOutbox {
     public enqueue(
         name: string,
         data: ArrayBuffer | ArrayBufferView,
-        options?: FileTransferOptions | undefined,
+        options?: FileTransferOptions | undefined
     ): Promise<FileTransfer> {
         return null;
     }

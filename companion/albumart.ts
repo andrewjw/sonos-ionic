@@ -22,7 +22,7 @@ export default class AlbumArt {
             this.getAlbumArt(albumArtURI);
         } else {
             this.messenger.sendMessage({
-                messageType: messages.CompanionMessageType.NO_ALBUM_ART,
+                messageType: messages.CompanionMessageType.NO_ALBUM_ART
             });
         }
     }

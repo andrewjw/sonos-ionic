@@ -18,23 +18,22 @@ export default class PlayScreen extends Screen {
     private pause: ImageElement = document.getElementById("pause_button") as ImageElement;
     private albumart: ImageElement = document.getElementById("albumart") as ImageElement;
 
-    constructor(private uuid: string,
-                changeScreen: (screen: Screen) => void) {
+    constructor(private uuid: string, changeScreen: (screen: Screen) => void) {
         super("play-screen", changeScreen);
 
         sendMessage({
             messageType: messages.AppMessageType.GET_TRANSPORT_INFO,
-            uuid: this.uuid,
+            uuid: this.uuid
         });
 
         sendMessage({
             messageType: messages.AppMessageType.GET_POSITION_INFO,
-            uuid: this.uuid,
+            uuid: this.uuid
         });
 
         sendMessage({
             messageType: messages.AppMessageType.GET_ZONE_GROUP,
-            uuid: this.uuid,
+            uuid: this.uuid
         });
 
         this.play.onclick = this.click_play.bind(this);
@@ -43,7 +42,7 @@ export default class PlayScreen extends Screen {
         document.getElementById("marquee").state = "disabled";
 
         setTimeout(() => {
-          document.getElementById("marquee").state = "enabled";
+            document.getElementById("marquee").state = "enabled";
         }, 2000);
 
         this.onMessage = this.onMessage.bind(this);
@@ -61,24 +60,24 @@ export default class PlayScreen extends Screen {
         console.log(JSON.stringify(msg));
         switch (msg.messageType) {
             case messages.CompanionMessageType.TRANSPORT_INFO:
-              this.transportState = msg.transportState;
-              this.updateState();
-              break;
+                this.transportState = msg.transportState;
+                this.updateState();
+                break;
             case messages.CompanionMessageType.ZONE_GROUP:
-              const zoneGroupName = document.getElementById("zone-group-name");
-              zoneGroupName.text = msg.zoneGroup.name;
-              break;
+                const zoneGroupName = document.getElementById("zone-group-name");
+                zoneGroupName.text = msg.zoneGroup.name;
+                break;
             case messages.CompanionMessageType.POSITION_INFO:
-              this.title = msg.title || "";
-              this.creator = msg.creator || "";
-              this.album = msg.album || "";
-              this.updateState();
-              break;
+                this.title = msg.title || "";
+                this.creator = msg.creator || "";
+                this.album = msg.album || "";
+                this.updateState();
+                break;
             case messages.CompanionMessageType.NO_ALBUM_ART:
-              clearAlbumArt();
-              break;
+                clearAlbumArt();
+                break;
             default:
-              console.error("Unhandled message " + JSON.stringify(msg));
+                console.error("Unhandled message " + JSON.stringify(msg));
         }
     }
 
@@ -123,14 +122,14 @@ export default class PlayScreen extends Screen {
     private click_play(): void {
         sendMessage({
             messageType: messages.AppMessageType.PLAY_ZONE_GROUP,
-            uuid: this.uuid,
+            uuid: this.uuid
         });
     }
 
     private click_pause(): void {
         sendMessage({
             messageType: messages.AppMessageType.PAUSE_ZONE_GROUP,
-            uuid: this.uuid,
+            uuid: this.uuid
         });
     }
 }

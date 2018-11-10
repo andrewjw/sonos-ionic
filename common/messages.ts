@@ -7,7 +7,7 @@ export enum AppMessageType {
     GET_TRANSPORT_INFO,
     GET_POSITION_INFO,
     PLAY_ZONE_GROUP,
-    PAUSE_ZONE_GROUP,
+    PAUSE_ZONE_GROUP
 }
 
 export interface IAppSimpleMessage {
@@ -15,12 +15,13 @@ export interface IAppSimpleMessage {
 }
 
 export interface IAppZoneGroupMessage {
-    messageType: AppMessageType.GET_MEDIA_INFO
-                | AppMessageType.GET_ZONE_GROUP
-                | AppMessageType.GET_TRANSPORT_INFO
-                | AppMessageType.GET_POSITION_INFO
-                | AppMessageType.PLAY_ZONE_GROUP
-                | AppMessageType.PAUSE_ZONE_GROUP;
+    messageType:
+        | AppMessageType.GET_MEDIA_INFO
+        | AppMessageType.GET_ZONE_GROUP
+        | AppMessageType.GET_TRANSPORT_INFO
+        | AppMessageType.GET_POSITION_INFO
+        | AppMessageType.PLAY_ZONE_GROUP
+        | AppMessageType.PAUSE_ZONE_GROUP;
     uuid: string;
 }
 
@@ -32,7 +33,7 @@ export enum CompanionMessageType {
     MEDIA_INFO,
     TRANSPORT_INFO,
     POSITION_INFO,
-    NO_ALBUM_ART,
+    NO_ALBUM_ART
 }
 
 export interface IZoneGroup {
@@ -75,9 +76,10 @@ export interface ISimpleMessage {
     messageType: CompanionMessageType.NO_ALBUM_ART;
 }
 
-export type ICompanionMessage = IZoneGroupsMessage
-                              | IZoneGroupMessage
-                              | IMediaInfoMessage
-                              | IPositionInfoMessage
-                              | ITransportInfoMessage
-                              | ISimpleMessage;
+export type ICompanionMessage =
+    | IZoneGroupsMessage
+    | IZoneGroupMessage
+    | IMediaInfoMessage
+    | IPositionInfoMessage
+    | ITransportInfoMessage
+    | ISimpleMessage;

@@ -20,21 +20,21 @@ handleAlbumArt();
 
 // Listen for the onopen event
 messaging.peerSocket.onopen = () => {
-  console.log("connected to companion");
+    console.log("connected to companion");
 
-  changeScreen(new ZoneGroupScreen(changeScreen));
+    changeScreen(new ZoneGroupScreen(changeScreen));
 };
 
 messaging.peerSocket.onmessage = (evt): void => {
-  const msg = evt.data as messages.ICompanionMessage;
+    const msg = evt.data as messages.ICompanionMessage;
 
-  currentScreen.onMessage(msg);
+    currentScreen.onMessage(msg);
 };
 
 // Listen for the onerror event
 messaging.peerSocket.onerror = (err: any): void => {
-  // Handle any errors
-  console.log("Connection error: " + err.code + " - " + err.message);
+    // Handle any errors
+    console.log("Connection error: " + err.code + " - " + err.message);
 
-  changeScreen(new NoPhone(changeScreen));
+    changeScreen(new NoPhone(changeScreen));
 };

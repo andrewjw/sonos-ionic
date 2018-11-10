@@ -10,7 +10,7 @@ export default class Waiting extends Screen {
     public onMessage(msg: messages.ICompanionMessage): void {
         switch (msg.messageType) {
             default:
-              console.error("Unhandled message " + JSON.stringify(msg));
+                console.error("Unhandled message " + JSON.stringify(msg));
         }
     }
 }

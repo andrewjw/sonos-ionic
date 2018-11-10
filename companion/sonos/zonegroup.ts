@@ -3,8 +3,8 @@ import ZoneGroupMember from "./zonegroupmember";
 export default class ZoneGroup {
     public static fromXML(xml: string): ZoneGroup {
         const opentagRegExp = new RegExp("<ZoneGroup ([^>]+)>");
-        const coordinatorRegExp = new RegExp("Coordinator=\"([^\"]+)\"");
-        const idRegExp = new RegExp("ID=\"([^\"]+)\"");
+        const coordinatorRegExp = new RegExp('Coordinator="([^"]+)"');
+        const idRegExp = new RegExp('ID="([^"]+)"');
         const membersRegExp = new RegExp("(<ZoneGroupMember .*?/>)", "gs");
 
         const openTag = opentagRegExp.exec(xml)[1];

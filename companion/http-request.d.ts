@@ -7,7 +7,7 @@ declare module "http-request" {
 
     interface HttpRequestOptions {
         method?: string;
-        headers?: {[key: string]: string};
+        headers?: { [key: string]: string };
         body?: string;
     }
 

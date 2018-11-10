@@ -3,8 +3,7 @@ import { MessageSocket } from "messaging";
 import * as messages from "../common/messages";
 
 export default class Messenger {
-    constructor(private socket: MessageSocket) {
-    }
+    constructor(private socket: MessageSocket) {}
 
     public sendMessage(msg: messages.ICompanionMessage): void {
         if (this.socket.readyState === this.socket.OPEN) {

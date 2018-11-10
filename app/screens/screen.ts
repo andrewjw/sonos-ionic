@@ -3,9 +3,11 @@ import document from "document";
 import { ICompanionMessage } from "../../common/messages";
 
 export default abstract class Screen {
-    constructor(private screenName: string,
-                protected changeScreen: (screen: Screen) => void,
-                initialWait: boolean = true) {
+    constructor(
+        private screenName: string,
+        protected changeScreen: (screen: Screen) => void,
+        initialWait: boolean = true
+    ) {
         this.waiting(initialWait);
     }
 

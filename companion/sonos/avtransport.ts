@@ -26,25 +26,26 @@ export default class AVTransport extends Service {
     }
 
     public getMediaInfo(): Promise<string> {
-        return this.request("GetMediaInfo", { InstanceID: 0 }).then((text) => {
+        return this.request("GetMediaInfo", { InstanceID: 0 }).then(text => {
             return text;
         });
     }
 
     public getPositionInfo(): Promise<IPositionInfo> {
-        const durationRegExp = new RegExp("duration=\"(\d+):(\d+):(\d+)\"");
+        const durationRegExp = new RegExp('duration="(d+):(d+):(d+)"');
         const titleRegExp = new RegExp("<dc:title>(.+)</dc:title>");
         const creatorRegExp = new RegExp("<dc:creator>(.+)</dc:creator>");
         const albumRegExp = new RegExp("<upnp:album>(.+)</upnp:album>");
         const albumArtRegExp = new RegExp("<upnp:albumArtURI>(.+)</upnp:albumArtURI>");
 
-        return this.request("GetPositionInfo", { InstanceID: 0 }).then((text) => {
+        return this.request("GetPositionInfo", { InstanceID: 0 }).then(text => {
             const durationMatch = durationRegExp.exec(text);
             let duration: number = null;
             if (durationMatch) {
-                duration = parseInt(durationMatch[1], 10) * 60 * 60
-                           + parseInt(durationMatch[2], 10) * 60
-                           + parseInt(durationMatch[3], 10);
+                duration =
+                    parseInt(durationMatch[1], 10) * 60 * 60 +
+                    parseInt(durationMatch[2], 10) * 60 +
+                    parseInt(durationMatch[3], 10);
             }
             const title = entities.decode(titleRegExp.exec(text)[1]);
             const creator = entities.decode(creatorRegExp.exec(text)[1]);
@@ -61,7 +62,11 @@ export default class AVTransport extends Service {
             }
 
             return {
-                album, albumArtURI, creator, duration, title,
+                album,
+                albumArtURI,
+                creator,
+                duration,
+                title
             };
         });
     }
@@ -69,25 +74,23 @@ export default class AVTransport extends Service {
     public getTransportInfo(): Promise<ITransportInfo> {
         const currentTransportStateRegExp = new RegExp("<CurrentTransportState>(.+)</CurrentTransportState>");
 
-        return this.request("GetTransportInfo", { InstanceID: 0 }).then((text) => {
+        return this.request("GetTransportInfo", { InstanceID: 0 }).then(text => {
             console.log(text);
             const transportState = currentTransportStateRegExp.exec(text)[1];
             return {
-                transportState: TransportState[transportState as any] as any,
+                transportState: TransportState[transportState as any] as any
             };
         });
     }
 
     public play(): Promise<boolean> {
-        return this.request("Play", { InstanceID: 0, Speed: 1 })
-            .then((data) => {
-                console.log(data);
-                return true;
-            });
+        return this.request("Play", { InstanceID: 0, Speed: 1 }).then(data => {
+            console.log(data);
+            return true;
+        });
     }
 
     public pause(): Promise<boolean> {
-        return this.request("Pause", { InstanceID: 0 })
-            .then(() => true);
+        return this.request("Pause", { InstanceID: 0 }).then(() => true);
     }
 }

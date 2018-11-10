@@ -19,7 +19,7 @@ export default class ZoneGroupScreen extends Screen {
         super("zone-group-screen", changeScreen);
 
         sendMessage({
-            messageType: messages.AppMessageType.GET_ZONE_GROUPS,
+            messageType: messages.AppMessageType.GET_ZONE_GROUPS
         });
     }
 
@@ -35,30 +35,30 @@ export default class ZoneGroupScreen extends Screen {
                 const NUM_ELEMS = this.zoneGroups.length;
 
                 VTList.delegate = {
-                  getTileInfo: function(index) {
-                    return {
-                      type: "zone-group-pool",
-                      value: "Menu item",
-                      index: index
-                    };
-                  },
-                  configureTile: (tile, info) => {
-                    if (info.type === "zone-group-pool") {
-                      tile.getElementById("text").text = this.zoneGroups[info.index].name;
-                      const touch = tile.getElementById("touch-me");
-                      touch.onclick = () => {
-                        console.log("touched", JSON.stringify(this.zoneGroups[info.index].name));
-                        this.changeScreen(new PlayScreen(this.zoneGroups[info.index].uuid, this.changeScreen));
-                      };
+                    getTileInfo: function(index) {
+                        return {
+                            type: "zone-group-pool",
+                            value: "Menu item",
+                            index: index
+                        };
+                    },
+                    configureTile: (tile, info) => {
+                        if (info.type === "zone-group-pool") {
+                            tile.getElementById("text").text = this.zoneGroups[info.index].name;
+                            const touch = tile.getElementById("touch-me");
+                            touch.onclick = () => {
+                                console.log("touched", JSON.stringify(this.zoneGroups[info.index].name));
+                                this.changeScreen(new PlayScreen(this.zoneGroups[info.index].uuid, this.changeScreen));
+                            };
+                        }
                     }
-                  },
                 };
 
                 // VTList.length must be set AFTER VTList.delegate
                 VTList.length = NUM_ELEMS;
                 break;
             default:
-              console.error("Unhandled message " + JSON.stringify(msg));
+                console.error("Unhandled message " + JSON.stringify(msg));
         }
     }
 }

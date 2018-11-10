@@ -1,7 +1,7 @@
 import ZonePlayer from "./zone_player";
 
 export default class Network {
-    private zonePlayers: {[key: string]: ZonePlayer} = {};
+    private zonePlayers: { [key: string]: ZonePlayer } = {};
 
     public addZonePlayer(ip: string, zp: ZonePlayer) {
         this.zonePlayers[ip] = zp;

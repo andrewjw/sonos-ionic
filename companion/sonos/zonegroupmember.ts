@@ -1,7 +1,7 @@
-const uuidRegExp = new RegExp("UUID=\"([^\"]+)\"");
-const locationRegExp = new RegExp("Location=\"([^\"]+)\"");
-const zonenameRegExp = new RegExp("ZoneName=\"([^\"]+)\"");
-const invisibleRegExp = new RegExp("Invisible=\"([^\"]+)\"");
+const uuidRegExp = new RegExp('UUID="([^"]+)"');
+const locationRegExp = new RegExp('Location="([^"]+)"');
+const zonenameRegExp = new RegExp('ZoneName="([^"]+)"');
+const invisibleRegExp = new RegExp('Invisible="([^"]+)"');
 
 export default class ZoneGroupMember {
     public static fromXML(xml: string): ZoneGroupMember {

@@ -1,46 +1,32 @@
 const gulp = require('gulp');
+const batch = require('gulp-batch');
 const ts = require('gulp-typescript');
 const tslint = require('gulp-tslint');
 const mocha = require('gulp-mocha');
 const sourcemaps = require('gulp-sourcemaps');
 const shell = require('gulp-shell');
+const watch = require('gulp-watch');
 
 gulp.task('default', ['lint', 'build', 'test', 'install']);
 
-gulp.task('build', shell.task(
+gulp.task('build', ['lint'], shell.task(
     'npx fitbit-build'
 ));
 
-gulp.task('install', shell.task(
+gulp.task('install', ['build'], shell.task(
     'npx fitbit-install'
 ));
 
-function builder(build_type, out_file, out_dir) {
-    var opts = {
-        noImplicitAny: true,
-    };
-
-    if (out_file) {
-        opts.module = 'amd';
-        opts.outFile = build_type + '.js';
-    }
-
-    return function () {
-        return gulp.src('src/' + build_type + '/*.ts')
-            .pipe(ts(opts))
-            .pipe(gulp.dest('out/' + out_dir));
-    }
-}
-
-gulp.task('build-backend', builder('backend', false, 'main'));
-
-gulp.task('build-frontend', builder('frontend', true, 'main/static'));
-
-gulp.task('build-mock', builder('mock', false, 'mock'));
+gulp.task('watch', function () {
+    watch(['app/**/*.ts', 'companion/**/*.ts', 'common/**/*.ts', 'test/**/*.ts'],
+        batch(function (events, done) {
+            gulp.start('cover', done);
+        }));
+});
 
 let testProject = ts.createProject("test/tsconfig.json");
 
-gulp.task('build-tests', function () {
+gulp.task('build-tests', ['build'], function () {
     return testProject.src()
         .pipe(sourcemaps.init())
         .pipe(testProject(ts.reporter.defaultReporter()))
@@ -57,7 +43,7 @@ gulp.task('lint', function () {
         .pipe(tslint.report());
 });
 
-gulp.task('test', ['lint', 'build-tests'], function () {
+gulp.task('test', ['build-tests'], function () {
     return gulp.src('build/test/test/*.js', { read: false })
         .pipe(mocha({ reporter: 'spec' }));
 });

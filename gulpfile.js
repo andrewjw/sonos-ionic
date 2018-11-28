@@ -30,7 +30,6 @@ gulp.task('build-tests', ['build'], function () {
     return testProject.src()
         .pipe(sourcemaps.init())
         .pipe(testProject(ts.reporter.defaultReporter()))
-        .on("error", (err)=>{ console.log(err); })
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('builttest'));
 });
@@ -49,7 +48,7 @@ gulp.task('test', ['build-tests'], function () {
 });
 
 gulp.task('jscover', ['build-tests'], shell.task([
-    'node ./node_modules/nyc/bin/nyc.js --all ./node_modules/mocha/bin/mocha --recursive builttest/test/',
+    'node ./node_modules/nyc/bin/nyc.js --all ./node_modules/mocha/bin/mocha --require source-map-support/register --recursive builttest/test/',
     'node ./node_modules/nyc/bin/nyc.js report -r html']
 ));
 

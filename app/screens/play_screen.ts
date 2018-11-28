@@ -1,10 +1,10 @@
-import { me } from "device";
+import { Device } from "device";
 import document from "document";
 
 import * as messages from "../../common/messages";
 import { TransportState } from "../../common/transport";
-import { clearAlbumArt, clearCallback, getAlbumArt, hasAlbumArt, onHasAlbumArt } from "../albumart";
-import sendMessage from "../send_message";
+import AlbumArt from "../albumart";
+import Messenger from "../messenger";
 import Screen from "./screen";
 
 export default class PlayScreen extends Screen {
@@ -14,24 +14,35 @@ export default class PlayScreen extends Screen {
     private creator: string = "";
     private album: string = "";
 
-    private play: ImageElement = document.getElementById("play_button") as ImageElement;
-    private pause: ImageElement = document.getElementById("pause_button") as ImageElement;
-    private albumart: ImageElement = document.getElementById("albumart") as ImageElement;
+    private play: ImageElement;
+    private pause: ImageElement;
+    private art: ImageElement;
 
-    constructor(private uuid: string, changeScreen: (screen: Screen) => void) {
-        super("play-screen", changeScreen);
+    constructor(
+        doc: typeof document,
+        private me: Device,
+        private messenger: Messenger,
+        private uuid: string,
+        changeScreen: (screen: Screen) => void,
+        private albumart: AlbumArt
+    ) {
+        super(doc, "play-screen", changeScreen);
 
-        sendMessage({
+        this.play = this.doc.getElementById("play_button") as ImageElement;
+        this.pause = this.doc.getElementById("pause_button") as ImageElement;
+        this.art = this.doc.getElementById("albumart") as ImageElement;
+
+        this.messenger.sendMessage({
             messageType: messages.AppMessageType.GET_TRANSPORT_INFO,
             uuid: this.uuid
         });
 
-        sendMessage({
+        this.messenger.sendMessage({
             messageType: messages.AppMessageType.GET_POSITION_INFO,
             uuid: this.uuid
         });
 
-        sendMessage({
+        this.messenger.sendMessage({
             messageType: messages.AppMessageType.GET_ZONE_GROUP,
             uuid: this.uuid
         });
@@ -39,32 +50,31 @@ export default class PlayScreen extends Screen {
         this.play.onclick = this.click_play.bind(this);
         this.pause.onclick = this.click_pause.bind(this);
 
-        document.getElementById("marquee").state = "disabled";
+        this.doc.getElementById("marquee").state = "disabled";
 
         setTimeout(() => {
-            document.getElementById("marquee").state = "enabled";
+            this.doc.getElementById("marquee").state = "enabled";
         }, 2000);
 
         this.onMessage = this.onMessage.bind(this);
 
-        onHasAlbumArt(this.updateState.bind(this));
+        this.albumart.onHasAlbumArt(this.updateState.bind(this));
 
         this.updateState();
     }
 
     public cleanup() {
-        clearCallback();
+        this.albumart.clearCallback();
     }
 
     public onMessage(msg: messages.ICompanionMessage): void {
-        console.log(JSON.stringify(msg));
         switch (msg.messageType) {
             case messages.CompanionMessageType.TRANSPORT_INFO:
                 this.transportState = msg.transportState;
                 this.updateState();
                 break;
             case messages.CompanionMessageType.ZONE_GROUP:
-                const zoneGroupName = document.getElementById("zone-group-name");
+                const zoneGroupName = this.doc.getElementById("zone-group-name");
                 zoneGroupName.text = msg.zoneGroup.name;
                 break;
             case messages.CompanionMessageType.POSITION_INFO:
@@ -74,7 +84,7 @@ export default class PlayScreen extends Screen {
                 this.updateState();
                 break;
             case messages.CompanionMessageType.NO_ALBUM_ART:
-                clearAlbumArt();
+                this.albumart.clearAlbumArt();
                 break;
             default:
                 console.error("Unhandled message " + JSON.stringify(msg));
@@ -83,21 +93,20 @@ export default class PlayScreen extends Screen {
 
     private updateState() {
         this.waiting(false);
-        if (hasAlbumArt()) {
-            console.log("has album art");
-            this.albumart.href = "/private/data/" + getAlbumArt();
-            this.albumart.style.display = "inline";
+        if (this.albumart.hasAlbumArt()) {
+            this.art.href = "/private/data/" + this.albumart.getAlbumArt();
+            this.art.style.display = "inline";
 
-            this.play.x = me.screen.width * 0.25 - 32;
-            this.play.y = me.screen.height * 0.5 - 32;
-            this.pause.x = me.screen.width * 0.25 - 32;
-            this.pause.y = me.screen.height * 0.5 - 32;
+            this.play.x = this.me.screen.width * 0.25 - 32;
+            this.play.y = this.me.screen.height * 0.5 - 32;
+            this.pause.x = this.me.screen.width * 0.25 - 32;
+            this.pause.y = this.me.screen.height * 0.5 - 32;
         } else {
-            this.albumart.style.display = "none";
-            this.play.x = me.screen.width * 0.5 - 32;
-            this.play.y = me.screen.height * 0.5 - 32;
-            this.pause.x = me.screen.width * 0.5 - 32;
-            this.pause.y = me.screen.height * 0.5 - 32;
+            this.art.style.display = "none";
+            this.play.x = this.me.screen.width * 0.5 - 32;
+            this.play.y = this.me.screen.height * 0.5 - 32;
+            this.pause.x = this.me.screen.width * 0.5 - 32;
+            this.pause.y = this.me.screen.height * 0.5 - 32;
         }
 
         if (this.transportState === TransportState.PAUSED_PLAYBACK || this.transportState === TransportState.STOPPED) {
@@ -108,7 +117,7 @@ export default class PlayScreen extends Screen {
             this.play.style.display = "none";
         }
 
-        for (const text of document.getElementById("marquee").getElementsByTagName("text")) {
+        for (const text of this.doc.getElementById("marquee").getElementsByTagName("text")) {
             if (this.title !== "" && this.creator !== "") {
                 text.text = this.title + " by " + this.creator;
             } else if (this.title !== "") {
@@ -120,14 +129,14 @@ export default class PlayScreen extends Screen {
     }
 
     private click_play(): void {
-        sendMessage({
+        this.messenger.sendMessage({
             messageType: messages.AppMessageType.PLAY_ZONE_GROUP,
             uuid: this.uuid
         });
     }
 
     private click_pause(): void {
-        sendMessage({
+        this.messenger.sendMessage({
             messageType: messages.AppMessageType.PAUSE_ZONE_GROUP,
             uuid: this.uuid
         });

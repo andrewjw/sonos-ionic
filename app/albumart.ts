@@ -1,53 +1,53 @@
-import { inbox } from "file-transfer";
+import { Inbox } from "file-transfer";
 import * as fs from "fs";
 
-let albumArt: string = null;
-let callback: () => void = null;
+export default class AlbumArt {
+    private albumArt: string = null;
+    private callback: () => void = null;
 
-export default function handleAlbumArt(): void {
-    inbox.addEventListener(
-        "newfile",
-        (event: any): void => {
-            let filename = inbox.nextFile();
-            while (filename) {
-                console.log("got album art", filename);
+    constructor(private inbox: Inbox) {
+        inbox.addEventListener(
+            "newfile",
+            (event: any): void => {
+                let filename = inbox.nextFile();
+                while (filename) {
+                    if (this.albumArt !== null) {
+                        fs.unlinkSync(this.albumArt);
+                    }
 
-                if (albumArt !== null) {
-                    fs.unlinkSync(albumArt);
+                    this.albumArt = filename;
+
+                    if (this.callback) {
+                        this.callback();
+                    }
+
+                    filename = inbox.nextFile();
                 }
-
-                albumArt = filename;
-
-                if (callback) {
-                    callback();
-                }
-
-                filename = inbox.nextFile();
             }
-        }
-    );
-}
-
-export function hasAlbumArt(): boolean {
-    return albumArt !== null;
-}
-
-export function getAlbumArt(): string {
-    return albumArt;
-}
-
-export function onHasAlbumArt(func: () => void): void {
-    callback = func;
-}
-
-export function clearAlbumArt(): void {
-    albumArt = null;
-
-    if (callback) {
-        callback();
+        );
     }
-}
 
-export function clearCallback(): void {
-    callback = null;
+    public hasAlbumArt(): boolean {
+        return this.albumArt !== null;
+    }
+
+    public getAlbumArt(): string {
+        return this.albumArt;
+    }
+
+    public onHasAlbumArt(func: () => void): void {
+        this.callback = func;
+    }
+
+    public clearAlbumArt(): void {
+        this.albumArt = null;
+
+        if (this.callback) {
+            this.callback();
+        }
+    }
+
+    public clearCallback(): void {
+        this.callback = null;
+    }
 }

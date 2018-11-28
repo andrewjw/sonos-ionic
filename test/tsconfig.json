@@ -3,6 +3,7 @@
       "../node_modules/fitbit-sdk-types/types",
       "../common/**/*.ts",
       "../companion/**/*.ts",
+      "../app/**/*.ts",
       "./**/*.ts"
   ],
   "exclude": [

@@ -1,7 +1,9 @@
+import { Device } from "device";
 import document from "document";
 
 import * as messages from "../../common/messages";
-import sendMessage from "../send_message";
+import AlbumArt from "../albumart";
+import Messenger from "../messenger";
 import PlayScreen from "./play_screen";
 import Screen from "./screen";
 
@@ -15,10 +17,16 @@ interface IMenuItem {
 export default class ZoneGroupScreen extends Screen {
     private zoneGroups: messages.IZoneGroup[] = [];
 
-    constructor(changeScreen: (screen: Screen) => void) {
-        super("zone-group-screen", changeScreen);
+    constructor(
+        doc: typeof document,
+        private me: Device,
+        private messenger: Messenger,
+        changeScreen: (screen: Screen) => void,
+        private albumart: AlbumArt
+    ) {
+        super(doc, "zone-group-screen", changeScreen);
 
-        sendMessage({
+        this.messenger.sendMessage({
             messageType: messages.AppMessageType.GET_ZONE_GROUPS
         });
     }
@@ -30,7 +38,7 @@ export default class ZoneGroupScreen extends Screen {
 
                 this.zoneGroups = msg.zoneGroups;
 
-                const VTList = document.getElementById("zone_group_list") as VirtualTileList;
+                const VTList = this.doc.getElementById("zone_group_list") as VirtualTileList;
 
                 const NUM_ELEMS = this.zoneGroups.length;
 
@@ -48,7 +56,16 @@ export default class ZoneGroupScreen extends Screen {
                             const touch = tile.getElementById("touch-me");
                             touch.onclick = () => {
                                 console.log("touched", JSON.stringify(this.zoneGroups[info.index].name));
-                                this.changeScreen(new PlayScreen(this.zoneGroups[info.index].uuid, this.changeScreen));
+                                this.changeScreen(
+                                    new PlayScreen(
+                                        this.doc,
+                                        this.me,
+                                        this.messenger,
+                                        this.zoneGroups[info.index].uuid,
+                                        this.changeScreen,
+                                        this.albumart
+                                    )
+                                );
                             };
                         }
                     }

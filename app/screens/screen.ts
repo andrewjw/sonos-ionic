@@ -4,6 +4,7 @@ import { ICompanionMessage } from "../../common/messages";
 
 export default abstract class Screen {
     constructor(
+        protected doc: typeof document,
         private screenName: string,
         protected changeScreen: (screen: Screen) => void,
         initialWait: boolean = true
@@ -18,12 +19,8 @@ export default abstract class Screen {
     }
 
     protected waiting(wait: boolean): void {
-        for (const screen of document.getElementsByClassName("screen") as Array<GraphicsElement>) {
-            if (screen.id === (wait ? "waiting" : this.screenName)) {
-                screen.style.display = "inline";
-            } else {
-                screen.style.display = "none";
-            }
+        for (const screen of this.doc.getElementsByClassName("screen") as GraphicsElement[]) {
+            screen.style.display = screen.id === (wait ? "waiting" : this.screenName) ? "inline" : "none";
         }
     }
 }

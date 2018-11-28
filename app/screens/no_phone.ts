@@ -1,10 +1,11 @@
+import document from "document";
 import Screen from "./screen";
 
 import * as messages from "../../common/messages";
 
 export default class NoPhone extends Screen {
-    constructor(changeScreen: (screen: Screen) => void) {
-        super("no-phone", changeScreen, false);
+    constructor(doc: typeof document, changeScreen: (screen: Screen) => void) {
+        super(doc, "no-phone", changeScreen, false);
     }
 
     public onMessage(msg: messages.ICompanionMessage): void {

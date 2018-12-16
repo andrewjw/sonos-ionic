@@ -1,5 +1,10 @@
 /* tslint:disable:max-classes-per-file */
 
+import { readFileSync } from "fs";
+import * as xml2js from "xml2js";
+
+import Element from "./element";
+
 type EventHandler = (event: Event) => boolean;
 
 class EventMap {}
@@ -37,6 +42,20 @@ export default class Document implements GlobalEvents {
     public onunload: (event: Event) => void;
     public onunselect: (event: Event) => void;
 
+    constructor() {
+        const docxml = readFileSync("resources/index.gui");
+        this.root = new Element("fake", {});
+        const parser = new xml2js.Parser({
+            charsAsChildren: true,
+            explicitChildren: true,
+            preserveChildrenOrder: true
+        });
+        parser.parseString(docxml, (err, result) => {
+            const rootTag = Object.keys(result)[0];
+            this.root.replace(rootTag, result[rootTag]);
+        });
+    }
+
     public getEventHandler(elementType: string): EventHandler | null {
         // TODO
         return null;
@@ -60,8 +79,7 @@ export default class Document implements GlobalEvents {
     }
 
     public getElementById(id: string): Element {
-        // TODO
-        return null;
+        return this.root.getElementById(id);
     }
 
     public getElementsByClassName(className: string): Element[] {

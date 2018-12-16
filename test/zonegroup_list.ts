@@ -13,7 +13,7 @@ import Companion from "../companion/companion";
 import App from "../app/app";
 
 describe("Test ZoneGroups Queried On Start", () => {
-    it("Test", done => {
+    it("Test Zones Queried", done => {
         const network = new Network();
         const zp1 = new ZonePlayer("A", "192.168.1.117", "ZP1");
         network.addZonePlayer("192.168.1.117", zp1);
@@ -34,6 +34,24 @@ describe("Test ZoneGroups Queried On Start", () => {
 
             done();
         };
+
+        mocks.getMessagingBridge().connected();
+    });
+
+    it("Test Zones Displayed", done => {
+        const network = new Network();
+        const zp1 = new ZonePlayer("A", "192.168.1.117", "ZP1");
+        network.addZonePlayer("192.168.1.117", zp1);
+        const mocks = new MockManager(network);
+
+        const app = new App(mocks.getDevice(), mocks.getDocument(), mocks.getDeviceSocket(), mocks.getInbox());
+        const companion = new Companion(mocks.getOutbox(), mocks.getCompanionSocket(), mocks.getFetch());
+
+        expect(companion).to.be.not.null;
+
+        mocks.getMessagingBridge().onDeviceFinished.push(() => {
+            done();
+        });
 
         mocks.getMessagingBridge().connected();
     });

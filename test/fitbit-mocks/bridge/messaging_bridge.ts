@@ -15,7 +15,7 @@ class MessageEvent extends MockEvent implements IMessageEvent {
 }
 
 export default class MessagingBridge {
-    public onDeviceFinished: Array<(() => void)> = [];
+    public onDeviceFinished: Array<() => void> = [];
 
     private companion = new MessageSocket(this.sendToDevice.bind(this));
     private device = new MessageSocket(this.sendToCompanion.bind(this));

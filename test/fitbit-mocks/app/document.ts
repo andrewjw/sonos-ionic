@@ -87,7 +87,19 @@ export default class Document implements GlobalEvents {
         return [];
     }
 
-    public getElementsByTagName(tagName: string | number): Element[] {
+    public getElementsByTagName(
+        tagName: "image" | "text" | "rect" | "line" | "circle" | "textarea" | "arc" | "gradientRect" | "gradientArc"
+    ): Array<
+        | ImageElement
+        | TextElement
+        | RectElement
+        | LineElement
+        | CircleElement
+        | TextAreaElement
+        | ArcElement
+        | GradientRectElement
+        | GradientArcElement
+    > {
         // TODO
         return [];
     }

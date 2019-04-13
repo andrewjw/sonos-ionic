@@ -6,7 +6,11 @@ const mocha = require('gulp-mocha');
 const sourcemaps = require('gulp-sourcemaps');
 const shell = require('gulp-shell');
 
-const build = gulp.series(lint, shell.task(
+const fixConsole = shell.task([
+    "gsed -i 's/const console/var console/g' node_modules/fitbit-sdk-types/types/shared/console.d.ts"
+]);
+
+const build = gulp.series(fixConsole, lint, shell.task(
     'npx fitbit-build'
 ));
 gulp.task('build', build);

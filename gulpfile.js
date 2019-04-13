@@ -45,10 +45,6 @@ gulp.task('test', test);
 
 gulp.task('default', gulp.series(lint, build, test, install));
 
-gulp.task('watch', function () {
-    gulp.watch(['app/**/*.ts', 'companion/**/*.ts', 'common/**/*.ts', 'test/**/*.ts'], cover);
-});
-
 const jscover = gulp.series(buildTests, shell.task([
     'node ./node_modules/nyc/bin/nyc.js --all ./node_modules/mocha/bin/mocha --require source-map-support/register --recursive builttest/test/',
     'node ./node_modules/nyc/bin/nyc.js report -r html']
@@ -56,10 +52,16 @@ const jscover = gulp.series(buildTests, shell.task([
 
 gulp.task('jscover', jscover);
 
-gulp.task('cover', gulp.series(jscover, shell.task([
+const cover = gulp.series(jscover, shell.task([
     'rm -f ./coverage/coverage-ts.json',
     'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage/coverage-ts.json',
     'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage -t html',
     'node ./node_modules/.bin/remap-istanbul -i ./coverage/coverage-final.json -o ./coverage/summary.txt -t text-summary',
     'cat ./coverage/summary.txt'
-])));
+]));
+
+gulp.task('cover', cover);
+
+gulp.task('watch', function () {
+    gulp.watch(['app/**/*.ts', 'companion/**/*.ts', 'common/**/*.ts', 'test/**/*.ts'], cover);
+});

@@ -19,7 +19,7 @@
     "gulp": "^4.0.0",
     "gulp-batch": "^1.0.5",
     "gulp-mocha": "^6.0.0",
-    "gulp-shell": "^0.6.5",
+    "gulp-shell": "^0.7.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-tslint": "^8.1.4",
     "gulp-typescript": "^5.0.1",

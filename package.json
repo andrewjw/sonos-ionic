@@ -15,7 +15,7 @@
     "chai": "^4.1.2",
     "codecov": "^3.1.0",
     "coveralls": "^3.0.3",
-    "fitbit-sdk-types": "^2.0.2",
+    "fitbit-sdk-types": "^3.2.13",
     "gulp": "^4.0.0",
     "gulp-batch": "^1.0.5",
     "gulp-mocha": "^6.0.0",

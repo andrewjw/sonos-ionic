@@ -44,10 +44,9 @@ function lint() {
 };
 gulp.task('lint', lint);
 
-const test = gulp.series(buildTests, function () {
-    return gulp.src('build/test/test/*.js', { read: false })
-        .pipe(mocha({ reporter: 'spec' }));
-});
+const test = gulp.series(buildTests, shell.task([
+    'node ./node_modules/mocha/bin/mocha --require source-map-support/register --recursive builttest/test/'
+]));
 gulp.task('test', test);
 
 gulp.task('default', gulp.series(lint, build, test, install));

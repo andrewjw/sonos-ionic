@@ -50,6 +50,13 @@ describe("Test ZoneGroups Queried On Start", () => {
         expect(companion).to.be.not.null;
 
         mocks.getMessagingBridge().onDeviceFinished.push(() => {
+            expect(
+                mocks
+                    .getDocument()
+                    .getElementById("zone-group-pool[0]")
+                    .getElementsByTagName("text")[0].text
+            ).to.be.equal("ZP1");
+
             done();
         });
 

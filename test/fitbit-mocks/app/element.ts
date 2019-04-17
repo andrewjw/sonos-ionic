@@ -1,8 +1,10 @@
 /* tslint:disable:max-classes-per-file */
 
+import createElement from "./createelement";
+
 class EventMap {}
 
-export default class Element {
+export default class ElementImpl implements Element {
     public readonly class: string;
     public readonly firstChild: Element | null;
     public readonly id: string;
@@ -10,7 +12,6 @@ export default class Element {
     public layer: number;
     public mode: number | [number, number];
     public readonly nextSibling: Element | null;
-    public readonly parent: Element | null;
     public state: ElementState;
     public text: string;
     public readonly type: string;
@@ -46,9 +47,9 @@ export default class Element {
     public onunselect: (event: Event) => void = null;
 
     private attributes: { [key: string]: string };
-    private children: Element[] = [];
+    private children: ElementImpl[] = [];
 
-    constructor(public tagName: string, raw: any) {
+    constructor(public parent: ElementImpl | null, public tagName: string, raw: any) {
         this.replace(tagName, raw);
     }
 
@@ -75,8 +76,14 @@ export default class Element {
     public getElementsByTagName<TagName extends keyof ElementSearchMap>(
         tagName: TagName
     ): Array<ElementSearchMap[TagName]> {
-        // TODO
-        return [];
+        let r: Array<ElementSearchMap[TagName]> = [];
+        if (this.tagName === tagName) {
+            r.push((this as unknown) as ElementSearchMap[TagName]);
+        }
+        for (const ele of this.children) {
+            r = r.concat(ele.getElementsByTagName<TagName>(tagName));
+        }
+        return r;
     }
 
     public replace(tagName: string, raw: any) {
@@ -84,7 +91,7 @@ export default class Element {
         this.attributes = raw.hasOwnProperty("$") ? raw.$ : {};
         if (raw.hasOwnProperty("$$")) {
             for (const ele of raw.$$) {
-                this.children.push(new Element(ele["#name"], ele));
+                this.children.push(createElement(this, ele));
             }
         }
     }
@@ -109,5 +116,33 @@ export default class Element {
 
     public sendEvent(): void {
         // TODO
+    }
+
+    public findRoot(): Element {
+        if (this.parent === null) {
+            return this;
+        } else {
+            return this.parent.findRoot();
+        }
+    }
+
+    public getAttribute(name: string): string {
+        return this.attributes[name];
+    }
+
+    public replaceChildren(children: ElementImpl[]): void {
+        this.children = children;
+    }
+
+    public clone(): ElementImpl {
+        const e = createElement(this.parent, {
+            "#name": this.tagName,
+            $: this.attributes,
+            $$: []
+        });
+
+        e.replaceChildren(this.children.map(c => c.clone()));
+
+        return e;
     }
 }

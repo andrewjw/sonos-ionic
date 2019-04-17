@@ -10,6 +10,7 @@
       "../companion/index.ts"
   ],
   "compilerOptions": {
+      "target": "es5",
       "noLib": false,
       "lib": ["es5", "es2015.promise", "es2015.iterable"],
       "types": [],

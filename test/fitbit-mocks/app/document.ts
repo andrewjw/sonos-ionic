@@ -3,7 +3,7 @@
 import { readFileSync } from "fs";
 import * as xml2js from "xml2js";
 
-import Element from "./element";
+import ElementImpl from "./element";
 
 type EventHandler = (event: Event) => boolean;
 
@@ -12,7 +12,7 @@ class EventMap {}
 export default class Document implements GlobalEvents {
     public readonly default: Document;
 
-    public readonly root: Element;
+    public readonly root: ElementImpl;
 
     public onactivate: (event: Event) => void;
     public onanimationend: (event: AnimationEvent) => void;
@@ -44,7 +44,7 @@ export default class Document implements GlobalEvents {
 
     constructor() {
         const docxml = readFileSync("resources/index.gui");
-        this.root = new Element("fake", {});
+        this.root = new ElementImpl(null, "fake", {});
         const parser = new xml2js.Parser({
             charsAsChildren: true,
             explicitChildren: true,

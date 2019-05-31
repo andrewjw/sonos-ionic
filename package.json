@@ -16,7 +16,7 @@
     "codecov": "3.3.0",
     "coveralls": "3.0.3",
     "fitbit-sdk-types": "2.0.2",
-    "gulp": "4.0.1",
+    "gulp": "4.0.2",
     "gulp-batch": "1.0.5",
     "gulp-mocha": "6.0.0",
     "gulp-shell": "0.7.0",

@@ -18,7 +18,7 @@
     "fitbit-sdk-types": "2.0.2",
     "gulp": "4.0.1",
     "gulp-batch": "1.0.5",
-    "gulp-mocha": "6.0.0",
+    "gulp-mocha": "7.0.2",
     "gulp-shell": "0.7.0",
     "gulp-sourcemaps": "2.6.5",
     "gulp-tslint": "8.1.4",

@@ -4,7 +4,7 @@
   "private": true,
   "license": "UNLICENSED",
   "devDependencies": {
-    "@fitbit/sdk": "1.0.6",
+    "@fitbit/sdk": "4.1.0",
     "@fitbit/sdk-cli": "1.6.0",
     "@types/chai": "4.1.7",
     "@types/express": "4.16.1",

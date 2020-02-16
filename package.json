@@ -24,7 +24,7 @@
     "gulp-tslint": "8.1.4",
     "gulp-typescript": "5.0.1",
     "mocha": "6.1.4",
-    "nock": "10.0.6",
+    "nock": "11.8.2",
     "nyc": "14.0.0",
     "prettier": "1.17.0",
     "remap-istanbul": "0.13.0",

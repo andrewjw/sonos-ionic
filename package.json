@@ -11,7 +11,7 @@
     "@types/html-entities": "1.2.16",
     "@types/mocha": "5.2.7",
     "@types/nock": "9.3.1",
-    "@types/xml2js": "0.4.4",
+    "@types/xml2js": "0.4.9",
     "chai": "4.2.0",
     "codecov": "3.3.0",
     "coveralls": "3.0.3",
@@ -33,7 +33,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-prettier": "2.0.1",
     "typescript": "3.4.4",
-    "xml2js": "0.4.19"
+    "xml2js": "0.4.23"
   },
   "fitbit": {
     "appUUID": "787fe03f-7643-4859-9cf6-277b5afc6768",
